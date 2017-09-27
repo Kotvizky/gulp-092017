@@ -3,6 +3,8 @@ body{
   background: #ccc
 }
 
+@import 'common/variables';
 @import 'common/menu';
 @import "common/technologies";
 @import "common/slider";
+@import "common/index";

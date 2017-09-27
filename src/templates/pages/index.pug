@@ -2,12 +2,31 @@ extends ../template
 
 block variables
     - var title = 'Добро пожаловать'
+    - var incon_folder = 'assets/images/'
+
 
 block content
-    h1 Главная
-    form
-        label(for="email")
-        input(name="email" id="email")
-        label(for="password")
-        input(name="password" id="password")
-        button Войти
+    .cover
+        .header
+            .btn
+                a.btn.auth(href='#') Авторизироватся
+        .main_section
+            .hero_panel
+                .hero_panel__image
+                    img(src='assets/images/png/profile.jpg')
+                h1.hero_panel__name Владимир Астахов
+                h2.hero_panel__description Личный сайт веб разработчика
+                ul.hero_panel__social
+                    each val in  [['#','vk.svg','Вконтакте'],['#','github.svg','GitHub'],['#','in.svg','LinkIn']]
+                        li.hero_panel__item
+                            a.hero_panel__link(href=val[0])
+                                .hero_panel__link_image
+                                    +svgIcon(val[1])
+                ul.hero_nav
+                        each val in  [['work','Мои работы'],['about','Обо мне'],['blog','Блог']]
+                            li.hero_nav_item
+                                a.hero_nav_link(href=assets/images/val[0]) #{val[1]}
+        .footer
+            .footer__copyright Евгений Котвицкий
+            .footer__tagline создано с любовью в LoftSchool
+            .footer__company 2016
