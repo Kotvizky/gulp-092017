@@ -9,7 +9,11 @@ const sourcemaps = require('gulp-sourcemaps');
 // scripts
 const gulpWebpack = require('gulp-webpack');
 const webpack = require('webpack');
-const webpackConfig = require('./webpack.config.js')
+const webpackConfig = require('./webpack.config.js');
+// svg icons
+const rsp = require('remove-svg-properties').stream;
+//fonts
+const ttf2woff = require('gulp-ttf2woff');
 
 
 // для удобства все пути в одном месте
@@ -30,6 +34,14 @@ const paths = {
     images: {
         src: 'src/images/**/*.*',
         dest: 'build/assets/images/'
+    },
+    fontsTtf: {
+        src: 'src/fonts/**/*.ttf',
+        dest: 'build/assets/fonts/'
+    },
+    svg: {
+        src: 'src/svg/*.svg',
+        dest: 'src/images/icons/'
     }
 };
 // pug
@@ -67,6 +79,23 @@ function images() {
     return gulp.src(paths.images.src)
         .pipe(gulp.dest(paths.images.dest));
 }
+// обрабатывает и копируем svg
+function svgIcons() {
+    return gulp.src(paths.svg.src)
+        .pipe(rsp.remove({
+            properties: [rsp.PROPS_FILL]
+        }))
+        .pipe(gulp.dest(paths.svg.dest));
+}
+
+//
+
+ function ttfFonts(){
+    return gulp.src(paths.fontsTtf.src)
+        .pipe(ttf2woff())
+        .pipe(gulp.dest(paths.fontsTtf.dest));
+}
+
 
 // следим за src и запускаем нужные таски (компиляция и пр.)
 function watch() {
@@ -93,12 +122,12 @@ exports.styles = styles;
 exports.scripts = scripts;
 exports.watch = watch;
 exports.server = server;
-
-
+exports.svgIcons = svgIcons;
+exports.ttfFonts = ttfFonts;
 
 // сборка и слежка
 gulp.task('default', gulp.series(
-    clean,
+    clean,svgIcons,ttfFonts,
     gulp.parallel(styles,templates,images,scripts),
     gulp.parallel(watch, server)
 ));
